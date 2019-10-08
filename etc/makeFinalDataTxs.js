@@ -10,6 +10,7 @@ var { toHex, keccak } = require('eth-util-lite')
 const EthereumTx = require('ethereumjs-tx')
 const privateKey = Buffer.from(
   // 'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
+  'd88e0b6040fd1083456194702935367638756198764039846575763810197478',
 
   'hex',
 )
@@ -24,7 +25,7 @@ function makeTx(finalDataElem, nonce){
   // var funcSig = "39846a67" //sol_clean
 
   var num = toHex(finalDataElem['num']).slice(2).toString(16).padStart(64, '0')
-  var seed = toHex(finalDataElem['seed']).slice(2)
+  var seed = toHex(finalDataElem['seed']).slice(2).toString(16).padStart(64, '0')
   var input = '0x'+funcSig+seed+num
 
   var gas = toHex((finalDataElem['num'] * 1000) + 30000 )

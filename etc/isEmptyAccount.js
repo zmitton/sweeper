@@ -32,9 +32,9 @@ async function wasErased(address){ // before eip161
 }
 
 async function getAccount(address, blockhash){
-  // let gp = new GetProof('http://localhost:8545')
+  let gp = new GetProof('http://localhost:8545')
   // let gp = new GetProof('https://etc-geth.0xinfra.com')
-  let gp = new GetProof('https://etc-parity.0xinfra.com')
+  // let gp = new GetProof('https://etc-parity.0xinfra.com')
   let p = await gp.accountProof(address, blockhash)
   let accountBuffer = await VerifyProof.proofContainsValueAt(p.accountProof, keccak(address))
   return accountBuffer ? Account.fromBuffer(accountBuffer) : null
