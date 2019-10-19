@@ -7,7 +7,7 @@ var final_data = require('./data/reverted.json');
 
 console.log("final_data.length = ", final_data.length)
 
-var { toHex, keccak } = require('eth-util-lite')
+var { toHex, keccak, toBuffer } = require('eth-util-lite')
 
 const EthereumTx = require('ethereumjs-tx')
 const privateKey = Buffer.from(
@@ -16,7 +16,7 @@ const privateKey = Buffer.from(
   'hex',
 )
 
-
+// Buffer.concat([Buffer.alloc(12),toBuffer("0x0021a2c532ca32535813e84e6752fb8c609a261a")])
 // gasLimit should be (num * 1000) + 25000
 
 

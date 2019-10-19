@@ -10,7 +10,6 @@ var { toHex, keccak } = require('eth-util-lite')
 const EthereumTx = require('ethereumjs-tx')
 const privateKey = Buffer.from(
   // 'e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109',
-  'd88e0b6040fd1083456194702935367638756198764039846575763810197478',
 
   'hex',
 )

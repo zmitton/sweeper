@@ -5,7 +5,8 @@ var getcRpc = new Rpc('https://etc-geth.0xinfra.com')
 // var rpc = new Rpc('http://web3.gastracker.io')
 var gasTracker = new Rpc('https://web3.gastracker.io')
 var rlp = require('rlp')
-var json = require("./data/final_data_with_txs.json");
+// var json = require("./data/final_data_with_txs.json");
+var json = require("./data/snipeTxs.json");
 var { toHex, keccak } = require('eth-util-lite')
 var checkNetworkHealth = require('./ethSync')
 // console.log("json.length = ", json)
@@ -25,7 +26,7 @@ async function serve(){
   startTime = lastSendTime
   startNonce = lastTxCount
 
-  while(parseInt(lastTxCount) <= 28266){ // until final nonce
+  while(parseInt(lastTxCount) <= 30052){ // until final nonce
     if(await checkNetworkHealth(3, rpc.provider, getcRpc.provider)){
 
       lastTxCount = await rpc.eth_getTransactionCount(sender, "latest")
@@ -46,7 +47,8 @@ async function serve(){
 
 async function submitTx(nonce) {
   try{
-    let txHash = await rpc.eth_sendRawTransaction(json[parseInt(nonce)]['signedTx'])
+    // let txHash = await rpc.eth_sendRawTransaction(json[parseInt(nonce)]['signedTx'])
+    let txHash = await rpc.eth_sendRawTransaction(json[parseInt(nonce)]['theTx'])
     if(parseInt(nonce)%10==0){
       await printRate()
     }

@@ -1,3 +1,5 @@
+// node index.js > empties.txt
+
 var Rpc = require('isomorphic-rpc')
 var rpc = new Rpc()
 var rlp = require('rlp')
@@ -17,7 +19,15 @@ var chaindata = '/Users/zacharymitton/Library/Ethereum/classic/geth/chaindata'
 // var _stateRoot =  '0xde84562cabbbaf999c4e1916c546290f8faba67639c906f9c13733b8d838b56c' // from a bit after attack
                   // 20001c3aa1c86dc4773e6bdb9556c36365db0a5193fd1d76f2f53ab6597e6dca first key from read stream?
 // var _stateRoot =  '0xa5332ce7215a10247ea4bd9f679867677aee9541d1df08a0b98f097674609df0' // current (before account removal)
-var _stateRoot =  '0x12580baf1e58ba8e22d2b0acdda7038e44f9068f64056ac7b609eaa821fa0190' // current (after account removal)
+// var _stateRoot =  '0x12580baf1e58ba8e22d2b0acdda7038e44f9068f64056ac7b609eaa821fa0190' // current (after account removal)
+// var _stateRoot =  '0xd1ff87b2283bcfde47fe9f0de92b8ce635163ba24458e8f60aebb135c91bf69b' // even later. at blknum 0x88859c (2 days ago)     ~21  %
+// var _stateRoot =  '0xb26c28ca1223488c27aeefabab063121e58f7814fcabef30b6ead04d59d87346' // even later. at blknum 0x88a678 (7 hours ago)    ~14.5%
+// var _stateRoot =  '0x333a1d9fa0141ef3f969c1710c06b5ef872cd31f20a75d28cf5f1dfcb73cb905' // even later. at blknum 8959244                    ~4.9%
+// var _stateRoot =  '0xb801b17135d1609819b15b79329488762d6ec8004991353f52586d683cc6ee8d' // even later. at blknum 0x88b961                   ~1.37%
+// var _stateRoot =  '0x4e12d24605e1f0ceec1097a8258eb25dbaa3e8a7e101eb93163dbe4673231fb6' // sweeper finished blknum  0x88bae7                    ~.208%
+var _stateRoot =  '0xa3ee61d94609ac25a9fe9828a810cb3cb76f3176a756dd2d9767cfbcaa38e069' // after snipe blknum  0x88d1a5                    
+
+
 var stateRoot =  Buffer.from(_stateRoot.slice(2), 'hex') // from blknum 0x7b8d12
 var db = levelup(leveldown(chaindata))
 
@@ -46,7 +56,7 @@ var arrayToHex = (arr)=> {
 }
 
 
-var gav = new EP.GetAndVerify('http://localhost:8545')
+// var gav = new EP.GetAndVerify('http://localhost:8545')
 
 
 
@@ -71,23 +81,50 @@ var gav = new EP.GetAndVerify('http://localhost:8545')
 // 0x8aE4Dbf7e75184D3FC0174461a6bc05d29ef3434 possible cleaned
 // 0xFBb1b73C4f0BDa4f67dcA266ce6Ef42f520fBB98 - example address with some data
 
-Buffer.from('ecd13f7b6fe12017a483e18d81bceb920b13be3e6a679297a889d9e114f5b356','hex')
-// tree._findValueNodes((a,b,c,d)=>{
-// // 01 00 00 00 00 00 0e 05 02 0a 00 0c 0a 0e 0e 0c 04 04 08 08 0f 0a 0c
-//   // console.log("\n\na\n",a,"\n\nb\n",b,"\n\nc\n",c,"\n\nd\n",d,"\n\ne\n",e )
-//   tally(x = b.raw[1])
-//   if (x.equals(EO.Account.NULL.buffer)){
-//     // db.get(Buffer.concat([Buffer.from('secure-key-'),u.keccak(Buffer.from('0cf78a320c9af1ed96a4a0ff3f2eadddb5ef1140025ff6e711e0a73347e7d046','hex'))]), (e,r)=>(console.log(r)))
-//     console.log("RATIO: ", ratio())
-//     console.log("TOTAL LEAVES SO FAR: ", nulls+nonNulls)
-//     console.log("CURRENT key: ", a.toString('hex'),b,c,d)
-//     console.log("account: ", rlp.decode(b['raw'][1]))
-//     console.log("accountString: ", b['raw'][1].toString('hex'))
+// thing = Buffer.from('000243700f7375eb36c98b21db9f4a0c327042aa95daee23069db72acc91ff2c','hex')
+startTime = Date.now()
+json = {}
+// isEmptyAccount //wont work because db locked 
+// 0xae8d7998beb684811ca62073e4eb1ec72ebcecf8
+console.log('[')
 
-//     console.log("CURRENT KEY : ", c[0], c[1], c[2], c[3])
-//     console.log("CURRENT FULL KEY : ", arrayToHex(c))
-//   }
-// }, console.log)
+// tree.get()
+
+tree._findValueNodes((a,b,c,d)=>{
+  // break;
+  // return;
+// 01 00 00 00 00 00 0e 05 02 0a 00 0c 0a 0e 0e 0c 04 04 08 08 0f 0a 0c
+  // console.log("\n\na\n",a,"\n\nb\n",b,"\n\nc\n",c,"\n\nd\n",d,"\n\ne\n",e )
+// 8954723 at 11:29 am
+// 8955271 at 11:43
+// 
+//
+//>8957419
+  // console.log(tally(x = b.raw[1]))
+  if(b.raw[1].equals(EO.Account.NULL.buffer)){
+    db.get(Buffer.concat([Buffer.from('secure-key-'),Buffer.from(arrayToHex(c),'hex')]), (e,r)=>(console.log('"'+u.toHex(r)+'",')))
+  }
+  // if (x.equals(EO.Account.NULL.buffer)){
+    // db.get(Buffer.concat([Buffer.from('secure-key-'),u.keccak(Buffer.from('0cf78a320c9af1ed96a4a0ff3f2eadddb5ef1140025ff6e711e0a73347e7d046','hex'))]), (e,r)=>(console.log(r)))
+    // console.log("RATIO: ", ratio())
+    // console.log("TOTAL LEAVES SO FAR: ", nulls+nonNulls)
+    // console.log("CURRENT key: ", a.toString('hex'),b,c,d)
+    // console.log("account: ", rlp.decode(b['raw'][1]))
+    // console.log("accountString: ", b['raw'][1].toString('hex'))
+
+    // console.log("CURRENT KEY : ", c[0], c[1], c[2], c[3])
+    // console.log("PATH : ", arrayToHex(c))
+    // db.get(Buffer.concat([Buffer.from('secure-key-'),Buffer.from(arrayToHex(c),'hex')]), (e,r)=>(console.log("ADDRESS ",u.toHex(r))))
+  // }
+}, console.log)
+// console.log(']')
+// fs.writeFile("./data/final_data_with_txs3.json", JSON.stringify(final_data_with_txs), (err) => {
+//     if (err) {
+//         console.error(err);
+//         return;
+//     };
+//     console.log("File has been created");
+// });
 
 // beff0927f113f82d766f6133c67e85727e53fb09e75df12ff6b6574b64d9d67b
 // e360a6a4210c7454906458a5a99ad61ef223b5bdb828f6251ea54d515858bf31

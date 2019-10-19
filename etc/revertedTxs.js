@@ -30,8 +30,10 @@ async function find(){
   var jsonKeys = Object.keys(json)
   // for (var i = 0; i < 2; i++) {
   // for (var i = 0; i < jsonKeys.length; i++) {
-  for (var i = 18; i < 13592; i++) {
-    var key = jsonKeys[i]
+  // for (var i = 18; i < 13592; i++) {
+  for (var i = 13592; i < 27172; i++) {
+  // for (var i = 13592; i < jsonKeys.length; i++) {
+    // var key = jsonKeys[i]
 
     // console.log(key)
 
@@ -45,18 +47,19 @@ async function find(){
       json[i]['receipt'] = receipt
       reverted.push(json[i])
       console.log("receipt ", receipt)
+      console.log(json[i]['txHash'], " ", i)
     }
 
   }
   console.log("LLLL", reverted.length)
   var fs = require("fs");
-  fs.writeFile("./data/reverted.json", JSON.stringify(reverted), (err) => {
-      if (err) {
-          console.error(err);
-          return;
-      };
-      console.log("File has been created");
-  });
+  // fs.writeFile("./data/reverted.json", JSON.stringify(reverted), (err) => {
+  //     if (err) {
+  //         console.error(err);
+  //         return;
+  //     };
+  //     console.log("File has been created");
+  // });
 }
 
 find()

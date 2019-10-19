@@ -96,3 +96,28 @@ So - I need another json file that saves every x seconds, with the same data as 
 when it starts it should check for the last transaction hash
 
 Update. Instead i presigned all the transactions into a json file, so the script just moniters the txs in the mempool, and keeps adding the next ones as they get batched. The downside is that i cant change the gasprice without re-running the script
+
+
+had to redo some of them because they reverted. The reason turned out to be when the seed started with `00` they were getting removed. Added padding to 64 bytes and created the finalData3 file (something like that). I also remade the existing txs with the fix so running process was fixed too
+
+when its done, I can run through the tree (index.js) using `_findValueNodes` and pipe all the rest of the empties into a file `node index.js > empties.txt`. It will hopefulyl not be all that many left. Can check this with the "tally" function (show ratio of empty to non-empty). Once I have those, make another script to create transactions to the `snipe` contract located here: https://blockscout.com/etc/mainnet/address/0xae02e6d8aeed663b44e5f06f23d20c2d38835bb5/contracts
+
+Then feed them into a variation of serve.js
+
+doule check that they are gettting removed.
+
+when its all done run through the entire tree again looking for empties!
+
+
+3 transactions from the final snipe lookup that I removed from the list so during the conclusion check, we can make sure they are found (then I can delete them by hand):
+
+"0xdf721dbcaaff45db71cebaba5f1f800347f9e9af", <- from about line  4,500 // this one! 
+double keccak of it "0x7e1243e41fc0a825de21de65b3a654d79d7f4b60cbf3b962c4d77437f7584cf7"
+
+
+"0xce3b5ffca16fff926c890f0885a3e90ceb89db0a", <- from about line 55,000
+"0x4c8a93797ad151bb9c24a8d1ee2e89a094e76399", <- from about line 26,000
+
+
+
+
